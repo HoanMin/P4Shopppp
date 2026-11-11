@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Star, Rocket, ShoppingCart, Zap, Check, Heart } from 'lucide-react';
+import { Star, Rocket, Check, Heart } from 'lucide-react';
 import { Product } from '../../types';
 import { formatVND } from '../../utils/pricing';
 import { useCart } from '../../context/CartContext';
@@ -13,24 +13,13 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, rankBadge }) => {
   const navigate = useNavigate();
-  const { addToCart, buyNow, isInWishlist, toggleWishlist, language, t } = useCart();
+  const { isInWishlist, toggleWishlist, language, t } = useCart();
 
   const isFavorite = isInWishlist(product.id);
   const localized = getLocalizedProduct(product, language);
 
   const handleCardClick = () => {
     navigate(`/product/${product.id}`);
-  };
-
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    addToCart(product);
-  };
-
-  const handleBuyNow = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    buyNow(product);
-    navigate('/checkout');
   };
 
   const handleToggleFavorite = (e: React.MouseEvent) => {
@@ -74,25 +63,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, rankBadge }) 
           <Heart className={`w-4 h-4 ${isFavorite ? 'fill-white stroke-white' : 'stroke-[2.2]'}`} />
         </button>
 
-        {/* Hover Quick Action Buttons */}
-        <div className="absolute inset-x-2 bottom-2 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
-          <button
-            onClick={handleAddToCart}
-            className="flex-1 bg-white/95 hover:bg-white text-blue-700 border border-blue-400 text-xs font-bold py-1.5 px-2 rounded-md shadow-md flex items-center justify-center gap-1 hover:border-blue-600 transition-all cursor-pointer"
-            title={t.common.addToCart}
-          >
-            <ShoppingCart className="w-3.5 h-3.5" />
-            <span>{t.common.addToCart}</span>
-          </button>
-          <button
-            onClick={handleBuyNow}
-            className="flex-1 bg-[#F0471C] hover:bg-[#d63a12] text-white text-xs font-bold py-1.5 px-2 rounded-md shadow-md flex items-center justify-center gap-1 transition-all cursor-pointer"
-            title={t.common.buyNow}
-          >
-            <Zap className="w-3.5 h-3.5 fill-white" />
-            <span>{t.common.buyNow}</span>
-          </button>
-        </div>
+
       </div>
 
       {/* Product Information */}
